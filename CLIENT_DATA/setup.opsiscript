@@ -1,0 +1,54 @@
+;======================================================================
+; setup.opsiscript DOTNET
+; J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 14:11:53 +0200
+; 
+; retrieve installed versions; do not actually install the software
+; https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed
+;======================================================================
+
+;======================================================================
+[Initial]
+;======================================================================
+setLogLevel=6
+; Log Errors in Logfile and abort:
+ExitOnError=true
+; Show syntax errors in the script:
+ScriptErrorMessages=off
+; Dont trace step by step through the script:
+TraceMode=off 
+; Let started programs run in front of the winst window
+StayOnTop=false 
+
+;======================================================================
+[Actions]
+;======================================================================
+include_insert "%ScriptPath%\product_variables.opsiinc"
+
+ShowBitmap $Img_Install$ $ProductName$
+message "Detecting " + $ProductName$"
+	
+marktime
+	
+if FileExists("%ScriptPath%\check_dot_net.opsiinc")
+	include_append "%ScriptPath%\check_dot_net.opsiinc"
+	
+	subCheckDotNetFramework
+	
+	if $hasDotNet$ = "True"
+		ShowBitmap $Img_OK$ $ProductName$
+		Message ".NET Framework found on this machine"
+		Message "detected version(s): " + composeString($dotNetList$, "|")
+	else
+		ShowBitmap $Img_FAIL$ $ProductName$	
+		logError ".NET Framework NOT found on this machine"
+		if $MakeErrorFatal$ = "True"
+			isFatalError ".NET not found"
+		endif
+	endif
+else
+	logError "File not found: check_dot_net.opsiinc"
+endif
+
+;=== measure installation time
+set $TimeDiff$ = getDiffTimeSec
+Message  "Execution time: " + $TimeDiff$ + " seconds"	

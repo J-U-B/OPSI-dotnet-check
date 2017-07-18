@@ -1,0 +1,100 @@
+[Package]
+version: 1
+depends: 
+incremental: False
+
+[Product]
+type: localboot
+id: {{TESTPREFIX}}{{ORGPREFIX}}dotnet-check
+name: dotnet
+description: .NET Framework - Check
+ Transitional package; only detect version
+advice: Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>
+Organization: {{ORGNAME}}
+Release date: 2017-07-18
+version: 0
+priority: 0
+licenseRequired: False
+productClasses: system
+setupScript: setup.opsiscript
+uninstallScript: 
+updateScript: 
+alwaysScript: 
+onceScript: 
+customScript: 
+userLoginScript: 
+
+;[ProductProperty]
+;type: bool
+;name: kill_running
+;description: kill running instance (for software on_demand)
+;default: False
+
+[ProductProperty]
+type: bool
+name: missing_is_fatal
+description: missing .NET Framework is a fatal error
+default: False
+
+;[ProductProperty]
+;type: unicode
+;name: install_architecture
+;multivalue: False
+;editable: False
+;description: which architecture (32/64 bit) should be installed
+;values: ["32 bit", "64 bit", "sysnative"]
+;default: ["64 bit"]
+
+;[ProductProperty]
+;type: unicode
+;name: default_language
+;multivalue: False
+;editable: False
+;description: application default language (currently unused!)
+;values: ["de", "en-GB", "en-US"]
+;default: ["en-US"]
+
+;[ProductProperty]
+;type: unicode
+;name: custom_post_install
+;multivalue: False
+;editable: True
+;description: Define filename for include script in custom directory after installation
+;values: ["none", "post-install.opsiinc"]
+;default: ["none"]
+
+;[ProductProperty]
+;type: unicode
+;name: custom_post_uninstall
+;multivalue: False
+;editable: True
+;description: Define filename for include script in custom directory after deinstallation
+;values: ["none", "post-uninstall.opsiinc"]
+;default: ["none"]
+
+[ProductProperty]
+type: unicode
+name: log_level
+multivalue: False
+editable: False
+description: Loglevel for this package
+values: ["default", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+default: ["default"]
+
+
+[Changelog]
+
+{ToDo}
+* cleanup unused code
+* documentation
+
+{{ORGPREFIX}}dotnet-check 0-1 {{STAGE}}
+	* initial
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 15:04:31 +0200
+
+
+
+
+
+
+

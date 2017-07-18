@@ -1,0 +1,91 @@
+;=====================================================================
+; Check for installed .NET Framework
+; J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 14:13:31 +0200
+; 
+; retrieve installed versions; do not actually install the software
+; https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed
+;=====================================================================
+
+;======================================================================
+[subCheckDotNetFramework]
+;======================================================================
+
+; "internal" variables:
+DefStringList 	$dotNetKeys$
+DefStringList 	$dotNetVarMap$
+DefStringList	$dotSplit$
+DefVar			$dotNetThisKey$
+DefVar 			$RegDotNet$
+DefVar			$dotNetDefVal$
+DefVar			$dotNetVersion$
+DefVar			$dotNetShort$
+DefVar			$dotNetSP$
+DefVar			$dotNetInstalled$
+
+; "external" variables
+DefStringList 	$dotNetList$
+DefVar			$hasDotNet$
+
+
+Set $RegDotNet$		= "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP"
+
+set $hasDotNet$ 	= "False"
+set $dotNetList$ 	= emptyList($dotNetList$)
+
+Set $dotNetKeys$ 	= getRegistryKeyListSysnative($RegDotNet$)
+
+for %k in $dotNetKeys$ do subCheckDotNetKey
+
+if $hasDotNet$ = "True"
+	ShowBitmap $Img_OK$ $ProductName$
+	Message ".NET Framework found on this machine"
+	Message "detected version(s): " + composeString($dotNetList$, "|")
+else
+	ShowBitmap $Img_FAIL$ $ProductName$	
+	logError ".NET Framework NOT found on this machine"
+	if $dotMakeFatal$ = "True"
+		isFatalError ".NET not found"
+	endif
+endif
+
+;======================================================================
+[subCheckDotNetKey]
+;======================================================================
+if (strpos(lower("%k"), "v") = "1")
+	comment "evaluating entry [%k]"
+	set $dotNetDefVal$ = getRegistryStringValueSysnative("[" + $RegDotNet$ + "\%k" + "]")
+	if not ($dotNetDefVal$ = "")
+		comment "found (default) value for [%k]: [" + $dotNetDefVal$ + "]; ignoring"
+	else
+		if "%k" >= "v4"
+			set $dotNetThisKey$ = $RegDotNet$ + "\%k\Full"
+		else
+			set $dotNetThisKey$ = $RegDotNet$ + "\%k"
+		endif
+		set $dotNetVarMap$ = getRegistryVarMapSysnative($dotNetThisKey$)
+		set $dotNetVersion$   = getValue("Version", $dotNetVarMap$)
+		set $dotNetSP$        = getValue("SP"     , $dotNetVarMap$)
+		set $dotNetInstalled$ = getValue("Install", $dotNetVarMap$)
+		set $dotSplit$			  = splitstring($dotNetVersion$,".")
+		set $dotNetShort$     = takestring("0", $dotSplit$) +"." + takestring("1", $dotSplit$)
+		if $dotNetInstalled$ = "1"
+			if $dotNetSP$ ="NULL"
+				message "Found .NET Framework v" + $dotNetShort$ + " [" + $dotNetVersion$ + "]"
+			else
+				message "Found .NET Framework v" + $dotNetShort$ + " SP"+ $dotNetSP$ + " [" + $dotNetVersion$ + "]"
+			endif
+			set $dotNetList$ = addToList($dotNetList$, $dotNetShort$)
+			set $hasDotNet$ = "True"
+		endif
+	endif
+else
+	switch lower("%k")
+		case "cdf"
+			comment "ignoring for 'CDF' (Channel Definition Format)"
+		endcase
+		defaultcase
+			comment "ignoring unexpected entry"
+		endcase
+	endswitch
+
+endif

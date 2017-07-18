@@ -1,0 +1,7 @@
+*.opsi
+*.zsync
+*.md5
+*.ins~
+*.inc~
+OPSI/control
+
