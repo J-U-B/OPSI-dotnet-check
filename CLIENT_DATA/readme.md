@@ -1,4 +1,4 @@
-# dotNet - Check#
+# dotNet - Check #
 
 Dieses Paket fuer **OPSI** installiert *keine* Software. Es wurde zur Bereitstellung
 von Produktabhaengigkeiten erstellt.

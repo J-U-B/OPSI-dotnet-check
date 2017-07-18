@@ -1,6 +1,6 @@
 ;=====================================================================
 ; Check for installed .NET Framework
-; J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 14:13:31 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 15:21:24 +0200
 ; 
 ; retrieve installed versions; do not actually install the software
 ; https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed
@@ -36,17 +36,17 @@ Set $dotNetKeys$ 	= getRegistryKeyListSysnative($RegDotNet$)
 
 for %k in $dotNetKeys$ do subCheckDotNetKey
 
-if $hasDotNet$ = "True"
-	ShowBitmap $Img_OK$ $ProductName$
-	Message ".NET Framework found on this machine"
-	Message "detected version(s): " + composeString($dotNetList$, "|")
-else
-	ShowBitmap $Img_FAIL$ $ProductName$	
-	logError ".NET Framework NOT found on this machine"
-	if $dotMakeFatal$ = "True"
-		isFatalError ".NET not found"
-	endif
-endif
+; if $hasDotNet$ = "True"
+;	ShowBitmap $Img_OK$ $ProductName$
+;	Message ".NET Framework found on this machine"
+;	Message "detected version(s): " + composeString($dotNetList$, "|")
+;else
+;	ShowBitmap $Img_FAIL$ $ProductName$	
+;	logError ".NET Framework NOT found on this machine"
+;	if $dotMakeFatal$ = "True"
+;		isFatalError ".NET not found"
+;	endif
+;endif
 
 ;======================================================================
 [subCheckDotNetKey]

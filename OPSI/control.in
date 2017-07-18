@@ -6,7 +6,7 @@ incremental: False
 [Product]
 type: localboot
 id: {{TESTPREFIX}}{{ORGPREFIX}}dotnet-check
-name: dotnet
+name: dotNET-Check
 description: .NET Framework - Check
  Transitional package; only detect version
 advice: Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>
