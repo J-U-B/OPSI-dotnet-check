@@ -1,6 +1,6 @@
 ;=====================================================================
 ; product specific variables  DOTNET
-; J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 14:13:55 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 16:07:58 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -33,7 +33,7 @@ Set $LogLevelDefault$ = GetProductProperty("log_level","default")
 
 ;-----------------------------------------------------------
 ;*** detect testing package:
-if strPos($FullProductId$, "0_") = "0"
+if (strPos($FullProductId$, "0_") = "0") and (strPos($FullProductId$, "test_") = "0")
 	; no a testing package
 	set $ProductId$  		= $FullProductId$ 
 	set $Testing$ 			= "false"
@@ -43,7 +43,7 @@ if strPos($FullProductId$, "0_") = "0"
 else
 	; this is a testing package
 	comment "Prefix for testing package detected"
-	set $ProductId$  		= strPart($FullProductId$,"3",strLength($FullProductId$))
+	set $ProductId$  		= strPart($FullProductId$, calculate(strPos($FullProductId$,"_") + "+1"), strLength($FullProductId$))
 	set $Testing$ 			= "true"
 	if ($LogLevelDefault$ = "default")
 		set $LogLevelDefault$  	= "7"
