@@ -17,10 +17,11 @@ Set $NTVersion$   		= GetMsVersionInfo
 ;-----------------------------------------------------------
 requiredWinstVersion >= "4.11.6"
 
-if not ($NTVersion$ >= "6.1")
+if not (CompareDotSeparatedNumbers($NTVersion$, ">=", "6.1"))
 	LogError "OS is not Windows 7 or above"
 	isFatalError
 endif
+
 
 if not ($SystemType$ = "64 Bit System")
 	LogError "OS is not a 64 Bit System"
