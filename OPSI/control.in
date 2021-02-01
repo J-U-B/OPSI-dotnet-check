@@ -1,5 +1,5 @@
 [Package]
-version: 3
+version: 4
 depends: 
 incremental: False
 
@@ -11,8 +11,8 @@ description: .NET Framework - Check
  Transitional package; only detect version
 advice: Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>
 Organization: {{ORGNAME}}
-Release date: 2019-01-31
-version: 0
+Release date: 2021-02-01
+version: 0.1
 priority: 0
 licenseRequired: False
 productClasses: system
@@ -87,6 +87,12 @@ default: ["default"]
 {ToDo}
 * cleanup unused code
 * documentation
+
+{{ORGPREFIX}}dotnet-check 0.1-4 {{STAGE}}
+	* switched from dfn to o4i
+	* Version 0 -> 0.1
+	* ununsed properties deactivated (code not removed)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-02-01 15:07:16 +0100
 
 {{ORGPREFIX}}dotnet-check 0-3 {{STAGE}}
 	* removed source images and xcf from package

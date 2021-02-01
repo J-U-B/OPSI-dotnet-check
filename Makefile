@@ -1,11 +1,11 @@
 ############################################################
 # OPSI package Makefile (generic)
-# Version: 1.1
+# Version: 1.2
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2017-07-18 15:50:54 +0200
+# 2021-02-01 14:59:01 +0100
 ############################################################
 
-.PHONY: header clean mpimsp dfn mpimsp_test dfn_test all_test all_prod all help
+.PHONY: header clean mpimsp o4i mpimsp_test o4i_test all_test all_prod all help
 
 OPSI_BUILDER = opsi-makeproductfile
 
@@ -22,11 +22,11 @@ mpimsp: header
 			STAGE="release"  \
 	build
 
-dfn: header
-	@echo "---------- building DFN package ----------------------------------"
+o4i: header
+	@echo "---------- building O4I package ----------------------------------"
 	@make 	TESTPREFIX=""    \
-			ORGNAME="DFN"    \
-			ORGPREFIX="dfn_" \
+			ORGNAME="O4I"    \
+			ORGPREFIX="o4i_" \
 			STAGE="release"  \
 	build
 
@@ -38,27 +38,27 @@ mpimsp_test: header
 			STAGE="testing"  \
 	build
 
-dfn_test: header
-	@echo "---------- building DFN testing package --------------------------"
+o4i_test: header
+	@echo "---------- building O4I testing package --------------------------"
 	@make 	TESTPREFIX="test_"  \
-			ORGNAME="DFN"    \
-			ORGPREFIX="dfn_" \
+			ORGNAME="O4I"    \
+			ORGPREFIX="o4i_" \
 			STAGE="testing"  \
 	build
 
-dfn_test_0: header
-	@echo "---------- building DFN testing package --------------------------"
+o4i_test_0: header
+	@echo "---------- building O4I testing package --------------------------"
 	@make 	TESTPREFIX="0_"  \
-			ORGNAME="DFN"    \
-			ORGPREFIX="dfn_" \
+			ORGNAME="O4I"    \
+			ORGPREFIX="o4i_" \
 			STAGE="testing"  \
 	build
 
-dfn_test_noprefix: header
-	@echo "---------- building DFN testing package --------------------------"
+o4i_test_noprefix: header
+	@echo "---------- building O4I testing package --------------------------"
 	@make 	TESTPREFIX=""    \
-			ORGNAME="DFN"    \
-			ORGPREFIX="dfn_" \
+			ORGNAME="O4I"    \
+			ORGPREFIX="o4i_" \
 			STAGE="testing"  \
 	build
 
@@ -70,14 +70,14 @@ help: header
 	@echo "----- valid targets: -----"
 	@echo "* mpimsp"
 	@echo "* mpimsp_test"
-	@echo "* dfn"
-	@echo "* dfn_test"
+	@echo "* o4i"
+	@echo "* o4i_test"
 	@echo "* all_prod"
 	@echo "* all_test"
 
-all_test:  header mpimsp_test dfn_test dfn_test_0
+all_test:  header mpimsp_test o4i_test o4i_test_0
 
-all_prod : header mpimsp dfn
+all_prod : header mpimsp o4i
 
 build:
 	@rm -f OPSI/control
@@ -90,8 +90,8 @@ build:
 	@$(OPSI_BUILDER) -k -m
 
 
-all_test:  header mpimsp_test dfn_test
+all_test:  header mpimsp_test o4i_test
 
-all_prod : header mpimsp dfn
+all_prod : header mpimsp o4i
 
-all : header mpimsp dfn mpimsp_test dfn_test
+all : header mpimsp o4i mpimsp_test o4i_test

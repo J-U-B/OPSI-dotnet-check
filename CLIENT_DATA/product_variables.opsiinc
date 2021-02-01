@@ -1,6 +1,6 @@
 ;=====================================================================
 ; product specific variables  DOTNET
-; J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 16:07:58 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-02-01 15:06:27 +0100
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -53,28 +53,30 @@ endif
 setlogLevel 				= $LogLevelDefault$
 
 ;-----------------------------------------------------------
-;*** detect DFN package:
-if strPos($FullProductId$, "dfn_") = "0"
-	set $isDFN$ = "false"
+;*** detect O4I package:
+if strPos($FullProductId$, "o4i_") = "0"
+	set $isO4I$ = "false"
 	set $StrippedProductId$ = $ProductId$
 else
-	set $isDFN$ = "true"
+	set $isO4I$ = "true"
 	set $StrippedProductId$ = strPart($ProductId$,"5",strLength($ProductId$))
 endif
 
 ;-----------------------------------------------------------
 ; software architecture; valid values: "32 bit", "64 bit", "sysnative"
 
-Set $sw_arch$ = GetProductProperty("install_architecture","sysnative")
-Set $sw_arch$ = takeString(0, splitString($sw_arch$, " "))
+;Set $sw_arch$ = GetProductProperty("install_architecture","sysnative")
+;Set $sw_arch$ = takeString(0, splitString($sw_arch$, " "))
 
-if ( $sw_arch$ = "sysnative" )
-	if ($SystemType$ = "64 Bit System")
-		Set $sw_arch$ = "64"
-	else
-		Set $sw_arch$ = "32"
-	endif
-endif
+;if ( $sw_arch$ = "sysnative" )
+;	if ($SystemType$ = "64 Bit System")
+;		Set $sw_arch$ = "64"
+;	else
+;		Set $sw_arch$ = "32"
+;	endif
+;endif
+
+Set $sw_arch$ = "32"
 
 if ($sw_arch$ = "64")
 	; 64 bit software
@@ -86,12 +88,12 @@ endif
 
 ;-----------------------------------------------------------
 ; language property: "de, "en_US", "en_GB"
-Set $sw_lang$ = GetProductProperty("default_language","en_US")
+; Set $sw_lang$ = GetProductProperty("default_language","en_US")
 
 ;-----------------------------------------------------------
 ; post install/uninstall properties:
-set $CustomPostInstall$ 	= getProductProperty("custom_post_install","none")
-set $CustomPostUninstall$ 	= getProductProperty("custom_post_uninstall","none")
+; set $CustomPostInstall$ 	= getProductProperty("custom_post_install","none")
+; set $CustomPostUninstall$ 	= getProductProperty("custom_post_uninstall","none")
 
 ;-----------------------------------------------------------
 ; is an error a fatal error?

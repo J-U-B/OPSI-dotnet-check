@@ -7,7 +7,7 @@
 #   PRODUCT_ID: id of the current product
 #   CLIENT_DATA_DIR: directory which contains the installed client data
 #=====================================================================
-# J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 15:57:46 +0200
+# J. Boettge <boettge@mpi-halle.mpg.de>  2021-02-01 15:15:00 +0100
 #=====================================================================
 
 LOGFILE=/tmp/${PRODUCT_ID}__opsi_package_install.log
@@ -27,19 +27,19 @@ DST="${CLIENT_DATA_DIR}/files"
 DST=${DST%\/}
 ERR=0
 
-### check for testing and DFN package:
+### check for testing and O4I package:
 P=${PRODUCT_ID}
 [ "${P}" = "${P##0_}" -a "${P}" = "${P##test_}" ] &&  IS_TESTING=false || IS_TESTING=true
 P=${P/#0_/}
 P=${P/#test_/}
-[ "${P}" = "${P##dfn_}" ] && IS_DFN=false || IS_DFN=true
+[ "${P}" = "${P##o4i_}" ] && IS_O4I=false || IS_O4I=true
 
 
-if [ $IS_DFN == true ]; then
+if [ $IS_O4I == true ]; then
 	 [ ! -d "${DST}" ] && mkdir $DST
 else
 	### symlink files directory to ../../source/${PRODUCT_ID##0_} only
-	### for non-DFN packages:
+	### for non-O4I packages:
 	if [ -h "${DST}" ]; then
 		echo "Symlink to [${DST}] already exists. - Replacing"
 		rm ${DST}
