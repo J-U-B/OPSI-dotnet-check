@@ -1,5 +1,5 @@
 [Package]
-version: 4
+version: 5
 depends: 
 incremental: False
 
@@ -11,7 +11,7 @@ description: .NET Framework - Check
  Transitional package; only detect version
 advice: Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>
 Organization: {{ORGNAME}}
-Release date: 2021-02-01
+Release date: 2021-02-10
 version: 0.1
 priority: 0
 licenseRequired: False
@@ -87,6 +87,11 @@ default: ["default"]
 {ToDo}
 * cleanup unused code
 * documentation
+
+{{ORGPREFIX}}dotnet-check 0.1-5 {{STAGE}}
+	* workaround for broken winst
+	* adjusted Makefile for OPSI >=4.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-02-10 13:27:17 +0100
 
 {{ORGPREFIX}}dotnet-check 0.1-4 {{STAGE}}
 	* switched from dfn to o4i

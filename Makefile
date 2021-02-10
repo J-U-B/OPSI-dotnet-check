@@ -1,13 +1,20 @@
 ############################################################
 # OPSI package Makefile (generic)
-# Version: 1.2
+# Version: 1.3
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2021-02-01 14:59:01 +0100
+# 2021-02-10 12:38:31 +0100
 ############################################################
 
 .PHONY: header clean mpimsp o4i mpimsp_test o4i_test all_test all_prod all help
 
-OPSI_BUILDER = opsi-makeproductfile
+OPSI_BUILDER := $(shell which opsi-makepackage)
+ifeq ($(OPSI_BUILDER),)
+	override OPSI_BUILDER := $(shell which opsi-makeproductfile)
+	ifeq ($(OPSI_BUILDER),)
+		$(error Error: opsi-make(package|productfile) not found!)
+	endif
+endif
+$(info * OPSI_BUILDER = $(OPSI_BUILDER))
 
 header:
 	@echo "=================================================="

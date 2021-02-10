@@ -1,6 +1,6 @@
 ;=====================================================================
 ; Check for installed .NET Framework
-; J. Boettge <boettge@mpi-halle.mpg.de>  2017-07-18 15:21:24 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-02-10 13:26:57 +0100
 ; 
 ; retrieve installed versions; do not actually install the software
 ; https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed
@@ -62,12 +62,27 @@ if (strpos(lower("%k"), "v") = "1")
 		else
 			set $dotNetThisKey$ = $RegDotNet$ + "\%k"
 		endif
-		set $dotNetVarMap$ = getRegistryVarMapSysnative($dotNetThisKey$)
-		set $dotNetVersion$   = getValue("Version", $dotNetVarMap$)
-		set $dotNetSP$        = getValue("SP"     , $dotNetVarMap$)
-		set $dotNetInstalled$ = getValue("Install", $dotNetVarMap$)
-		set $dotSplit$			  = splitstring($dotNetVersion$,".")
-		set $dotNetShort$     = takestring("0", $dotSplit$) +"." + takestring("1", $dotSplit$)
+
+
+		if (CompareDotSeparatedNumbers("%WinstVersion%", "4.12.4.14") = "-1")
+			comment "using workaround for broken winst"
+			; GetRegistryStringValue64("["+$dotNetThisKey$+"] Version")
+			set $dotNetVersion$   = GetRegistryStringValue64("["+$dotNetThisKey$+"] Version")
+			set $dotNetSP$        = GetRegistryStringValue64("["+$dotNetThisKey$+"] SP")
+			set $dotNetInstalled$ = GetRegistryStringValue64("["+$dotNetThisKey$+"] Install")
+		else
+			comment "using fixed version if winst"
+			set $dotNetVarMap$    = getRegistryVarMapSysnative($dotNetThisKey$)
+			set $dotNetVersion$   = getValue("Version", $dotNetVarMap$)
+			set $dotNetSP$        = getValue("SP"     , $dotNetVarMap$)
+			set $dotNetInstalled$ = getValue("Install", $dotNetVarMap$)
+		endif
+		set $dotSplit$ = splitstring($dotNetVersion$,".")
+		if ( count($dotSplit$) >= "2" )
+			set $dotNetShort$ = takestring("0", $dotSplit$) +"." + takestring("1", $dotSplit$)
+		else
+			set $dotNetShort$ = $dotNetVersion$
+		endif
 		if $dotNetInstalled$ = "1"
 			if $dotNetSP$ ="NULL"
 				message "Found .NET Framework v" + $dotNetShort$ + " [" + $dotNetVersion$ + "]"
